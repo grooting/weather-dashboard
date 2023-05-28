@@ -6,6 +6,12 @@ import { useState } from "react";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 
+interface City {
+  name: string;
+  country: string;
+  state: string;
+};
+
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -49,11 +55,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export function SearchResults() {
-  const [cityNames, setCityNames] = useState<string[]>([
-    "haha",
-    "hoho",
-    "hihi",
-  ]);
+  const [cities, setCities] = useState<City[]>([]);
   const [query, setQuery] = useState<string>("");
 
   useEffect(() => {
@@ -62,14 +64,15 @@ export function SearchResults() {
     }
   }, [query]);
 
-  const getCitiesAsync = async () => {
+  const getCitiesAsync = () => {
     const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
     const apiUrl = process.env.REACT_APP_WEATHER_API_URL;
-    // await fetch(`${apiUrl}/geo/1.0/direct?q=${query}&limit=5&appid=${apiKey}`)
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     setCites(data.map((city: any) => city.name));
-    //   });
+    fetch(`${apiUrl}/geo/1.0/direct?q=${query}&limit=5&appid=${apiKey}`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setCities(data);
+      });
   };
 
   return (
@@ -79,13 +82,15 @@ export function SearchResults() {
           <SearchIcon />
         </SearchIconWrapper>
         <Autocomplete
-          options={cityNames}
+          freeSolo
+          options={cities.map((city) => `${city.name}, ${city.state}, ${city.country}`)}
           onInputChange={(event, value) => {
             setQuery(value);
           }}
           renderInput={(params) => (
             <StyledInputBase
               ref={params.InputProps.ref}
+              placeholder="Search by city name"
               inputProps={params.inputProps}
               autoFocus
             />
