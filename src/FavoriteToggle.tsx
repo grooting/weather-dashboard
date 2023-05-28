@@ -3,7 +3,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import IconButton from '@mui/material/IconButton';
 import { useState } from "react";
 
-export function Favorite(props: any) {
+export function FavoriteToggle(props: any) {
     const [saved, setSaved] = useState(false);
 
     const toggleSave = () => {
