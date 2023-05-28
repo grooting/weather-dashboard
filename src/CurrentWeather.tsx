@@ -7,7 +7,7 @@ export function CurrentWeather(props: any) {
 
   return (
     <Paper elevation={3} style={{ width: "60%", height: "280px", padding: "15px", maxWidth: "500px" }}>
-      <FavoriteToggle onSave={props.onSave}/>
+      <FavoriteToggle onSave={props.onSave} saved={props.saved}/>
       <Stack
         spacing={2}
         alignItems={"center"}

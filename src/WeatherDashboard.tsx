@@ -99,11 +99,11 @@ export function WeatherDashboard() {
         alignItems={"center"}
       >
         {idx === 0 && <>
-          <CurrentWeather weather={currentWeather} onSave={onToggleSave} />
+          <CurrentWeather weather={currentWeather} onSave={onToggleSave} saved={currentWeather ? savedCities.includes(currentWeather.name) : false} />
           <CityForecast forecast={forecast} /></>
         }
         {idx === 1 &&
-          <SavedCities savedCities={savedCities} getCityWeather={getCityWeather}/>
+          <SavedCities savedCities={savedCities} getCityWeather={getCityWeather} />
         }
       </Stack>
       <BottomNav onClick={onClick} idx={idx} />
