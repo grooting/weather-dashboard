@@ -5,6 +5,8 @@ import Stack from "@mui/material/Stack";
 import { useState } from "react";
 import { useEffect } from "react";
 import { API_KEY, API_URL } from "./index";
+import { BottomNav } from "./BottomNav";
+import { SavedCities } from "./SavedCities";
 
 export interface Weather {
   temp: number;
@@ -27,13 +29,12 @@ export function WeatherDashboard() {
   const [currentWeather, setCurrentWeather] = useState<Weather>();
   const [forecast, setForecast] = useState<WeatherPreview[]>([]);
   const [savedCities, setSavedCities] = useState<string[]>([]);
+  const [idx, setIdx] = useState<number>(0);
 
   // demo data
   useEffect(() => {
     getCityWeather("London,uk");
   }, []);
-
-  console.log(savedCities);
 
   const getCityWeather = (cityName: string) => {
     // use city name to get current weather
@@ -83,18 +84,28 @@ export function WeatherDashboard() {
     }
   }
 
+  const onClick = (idx: number) => {
+    setIdx(idx);
+  }
+
   return (
     <>
       <SearchAppBar onSelect={getCityWeather} />
-      <Stack
-        spacing={2}
-        style={{ marginTop: "48px" }}
-        justifyContent={"center"}
-        alignItems={"center"}
-      >
-        <CurrentWeather weather={currentWeather} onSave={onToggleSave} />
-        <CityForecast forecast={forecast} />
-      </Stack>
+      {idx === 0 &&
+        <Stack
+          spacing={2}
+          style={{ marginTop: "48px" }}
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
+          <CurrentWeather weather={currentWeather} onSave={onToggleSave} />
+          <CityForecast forecast={forecast} />
+        </Stack>
+      }
+      {idx === 1 &&
+        <SavedCities savedCities={savedCities} />
+      }
+      <BottomNav onClick={onClick} />
     </>
   );
 }
