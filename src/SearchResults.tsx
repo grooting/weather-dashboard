@@ -69,7 +69,6 @@ export function SearchResults(props: any) {
     fetch(`${API_URL}/geo/1.0/direct?q=${query}&limit=5&appid=${API_KEY}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setCities(data);
       });
   };

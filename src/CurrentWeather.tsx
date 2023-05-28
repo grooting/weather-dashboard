@@ -2,7 +2,6 @@ import styles from "./CurrentWeather.module.css";
 import Paper from '@mui/material/Paper';
 import Stack from "@mui/material/Stack";
 
-// all weather icons are from https://www.flaticon.com/
 export function CurrentWeather(props: any) {
   return (
     <Paper elevation={3} style={{ width: "60%", height: "280px", padding: "15px", maxWidth: "500px" }}>

@@ -20,15 +20,12 @@ export interface WeatherPreview {
   minTemp: number;
   weather: string;
   icon: string;
-};
-
-interface WeatherResult {
-  weather: Weather;
-  forcast: WeatherPreview[];
+  date: string;
 };
 
 export function WeatherDashboard() {
-  const [weatherResult, setWeatherResult] = useState<WeatherResult>();
+  const [currentWeather, setCurrentWeather] = useState<Weather>();
+  const [forecast, setForecast] = useState<WeatherPreview[]>([]);
 
   // demo data
   useEffect(() => {
@@ -36,22 +33,36 @@ export function WeatherDashboard() {
   }, []);
 
   const getCityWeather = (cityName: string) => {
+    // use city name to get current weather
     fetch(`${API_URL}/data/2.5/weather?q=${cityName}&APPID=${API_KEY}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        setWeatherResult({
-          weather: {
-            name: data.name,
-            temp: data.main.temp,
-            humidity: data.main.humidity,
-            windSpeed: data.wind.speed,
-            weather: data.weather[0].main,
-            icon: data.weather[0].icon,
-          },
-          forcast: []
+        setCurrentWeather({
+          name: data.name,
+          temp: data.main.temp,
+          humidity: data.main.humidity,
+          windSpeed: data.wind.speed,
+          weather: data.weather[0].main,
+          icon: data.weather[0].icon,
         });
       });
+
+    // get forecast (use q instead of lat and lon, somehow it works)
+    fetch(`${API_URL}/data/2.5/forecast?q=${cityName}&APPID=${API_KEY}`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setForecast(
+          data.list.map((item: any) => ({
+            maxTemp: item.main.temp_max,
+            minTemp: item.main.temp_min,
+            weather: item.weather[0].main,
+            icon: item.weather[0].icon,
+            date: item.dt_txt.split(" ")[0].split("-").splice(1, 2).join("-"),
+          }))
+        );
+      }
+      );
   };
 
   return (
@@ -63,8 +74,8 @@ export function WeatherDashboard() {
         justifyContent={"center"}
         alignItems={"center"}
       >
-        <CurrentWeather weather={weatherResult?.weather} />
-        <CityForecast />
+        <CurrentWeather weather={currentWeather} />
+        <CityForecast forecast={forecast} />
       </Stack>
     </>
   );
