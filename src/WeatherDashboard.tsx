@@ -67,6 +67,7 @@ export function WeatherDashboard() {
         );
       }
       );
+    setIdx(0); // view current weather
   };
 
   const onToggleSave = (saving: boolean) => {
@@ -105,7 +106,7 @@ export function WeatherDashboard() {
       {idx === 1 &&
         <SavedCities savedCities={savedCities} />
       }
-      <BottomNav onClick={onClick} />
+      <BottomNav onClick={onClick} idx={idx} />
     </>
   );
 }
