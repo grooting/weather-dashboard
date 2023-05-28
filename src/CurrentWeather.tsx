@@ -1,4 +1,3 @@
-import sunny from "./weather-icons/sun.gif";
 import styles from "./CurrentWeather.module.css";
 import Paper from '@mui/material/Paper';
 import Stack from "@mui/material/Stack";
@@ -11,7 +10,7 @@ export function CurrentWeather(props: any) {
         spacing={2}
         alignItems={"center"}
       >
-        <img src={sunny} alt="weather-icon" className={styles.weatherIcon} />
+        <img src={props.weather ? `https://openweathermap.org/img/wn/${props.weather?.icon}@2x.png` : ""} alt="weather-icon" className={styles.weatherIcon} />
         <h4>City: {props.weather?.name}<br />
           Weather: {props.weather?.weather}
         </h4>
