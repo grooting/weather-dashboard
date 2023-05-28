@@ -26,11 +26,14 @@ export interface WeatherPreview {
 export function WeatherDashboard() {
   const [currentWeather, setCurrentWeather] = useState<Weather>();
   const [forecast, setForecast] = useState<WeatherPreview[]>([]);
+  const [savedCities, setSavedCities] = useState<string[]>([]);
 
   // demo data
   useEffect(() => {
     getCityWeather("London,uk");
   }, []);
+
+  console.log(savedCities);
 
   const getCityWeather = (cityName: string) => {
     // use city name to get current weather
@@ -65,6 +68,21 @@ export function WeatherDashboard() {
       );
   };
 
+  const onToggleSave = (saving: boolean) => {
+    const cityName = currentWeather?.name;
+    if (saving) {
+      // add current city to saved cities
+      if (cityName && !savedCities.includes(cityName)) {
+        setSavedCities([...savedCities, currentWeather?.name]);
+      }
+    } else {
+      // remove current city from saved cities
+      if (cityName && savedCities.includes(cityName)) {
+        setSavedCities(savedCities.filter((city) => city !== cityName));
+      }
+    }
+  }
+
   return (
     <>
       <SearchAppBar onSelect={getCityWeather} />
@@ -74,7 +92,7 @@ export function WeatherDashboard() {
         justifyContent={"center"}
         alignItems={"center"}
       >
-        <CurrentWeather weather={currentWeather} />
+        <CurrentWeather weather={currentWeather} onSave={onToggleSave} />
         <CityForecast forecast={forecast} />
       </Stack>
     </>
