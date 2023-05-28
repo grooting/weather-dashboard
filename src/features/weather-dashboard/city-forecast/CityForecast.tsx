@@ -1,5 +1,5 @@
 import { Box, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
-import { WeatherPreview } from "./WeatherDashboard";
+import { WeatherPreview } from "../WeatherDashboard";
 import styles from "./CityForecast.module.css";
 
 interface CityForecastProps {

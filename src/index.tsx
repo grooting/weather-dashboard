@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { Provider } from 'react-redux';
+import { store } from './app/store';
 
 export const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
 export const API_URL = process.env.REACT_APP_WEATHER_API_URL;
@@ -10,9 +12,12 @@ export const API_URL = process.env.REACT_APP_WEATHER_API_URL;
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>
 );
 

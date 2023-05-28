@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
-import { API_KEY, API_URL } from "./index";
+import { API_KEY, API_URL } from "../../../index";
 
 interface City {
   name: string;

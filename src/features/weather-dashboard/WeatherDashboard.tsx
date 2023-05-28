@@ -1,10 +1,10 @@
-import { SearchAppBar } from "./SearchBarApp";
-import { CurrentWeather } from "./CurrentWeather";
-import { CityForecast } from "./CityForecast";
+import { SearchAppBar } from "./search-bar-app/SearchBarApp";
+import { CurrentWeather } from "./current-weather/CurrentWeather";
+import { CityForecast } from "./city-forecast/CityForecast";
 import Stack from "@mui/material/Stack";
 import { useState } from "react";
 import { useEffect } from "react";
-import { API_KEY, API_URL } from "./index";
+import { API_KEY, API_URL } from "../../index";
 import { BottomNav } from "./BottomNav";
 import { SavedCities } from "./SavedCities";
 
