@@ -4,6 +4,7 @@ import { CityForecast } from "./CityForecast";
 import Stack from "@mui/material/Stack";
 import { useState } from "react";
 import { useEffect } from "react";
+import { API_KEY, API_URL } from "./index";
 
 export interface Weather {
   temp: number;
@@ -26,9 +27,6 @@ interface WeatherResult {
   forcast: WeatherPreview[];
 };
 
-const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
-const apiUrl = process.env.REACT_APP_WEATHER_API_URL;
-
 export function WeatherDashboard() {
   const [weatherResult, setWeatherResult] = useState<WeatherResult>();
 
@@ -38,7 +36,7 @@ export function WeatherDashboard() {
   }, []);
 
   const getCityWeather = (cityName: string) => {
-    fetch(`${apiUrl}/data/2.5/weather?q=${cityName},uk&APPID=${apiKey}`)
+    fetch(`${API_URL}/data/2.5/weather?q=${cityName}&APPID=${API_KEY}`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);

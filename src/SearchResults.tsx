@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
+import { API_KEY, API_URL } from "./index";
 
 interface City {
   name: string;
@@ -65,9 +66,7 @@ export function SearchResults(props: any) {
   }, [query]);
 
   const getCities = () => {
-    const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
-    const apiUrl = process.env.REACT_APP_WEATHER_API_URL;
-    fetch(`${apiUrl}/geo/1.0/direct?q=${query}&limit=5&appid=${apiKey}`)
+    fetch(`${API_URL}/geo/1.0/direct?q=${query}&limit=5&appid=${API_KEY}`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);

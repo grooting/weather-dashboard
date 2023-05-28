@@ -4,6 +4,9 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+export const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
+export const API_URL = process.env.REACT_APP_WEATHER_API_URL;
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
