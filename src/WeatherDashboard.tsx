@@ -92,20 +92,21 @@ export function WeatherDashboard() {
   return (
     <>
       <SearchAppBar onSelect={getCityWeather} />
-      {idx === 0 &&
-        <Stack
-          spacing={2}
-          style={{ marginTop: "48px" }}
-          justifyContent={"center"}
-          alignItems={"center"}
-        >
+      <Stack
+        spacing={2}
+        style={{ marginTop: "48px" }}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
+        {idx === 0 && <>
           <CurrentWeather weather={currentWeather} onSave={onToggleSave} />
-          <CityForecast forecast={forecast} />
-        </Stack>
-      }
-      {idx === 1 &&
-        <SavedCities savedCities={savedCities} />
-      }
+          <CityForecast forecast={forecast} /></>
+        }
+        {idx === 1 &&
+          <SavedCities savedCities={savedCities} />
+        }
+      </Stack>
+
       <BottomNav onClick={onClick} idx={idx} />
     </>
   );
