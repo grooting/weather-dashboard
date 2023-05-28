@@ -54,17 +54,17 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export function SearchResults() {
+export function SearchResults(props: any) {
   const [cities, setCities] = useState<City[]>([]);
   const [query, setQuery] = useState<string>("");
 
   useEffect(() => {
     if (query.length > 1) {
-      getCitiesAsync();
+      getCities();
     }
   }, [query]);
 
-  const getCitiesAsync = () => {
+  const getCities = () => {
     const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
     const apiUrl = process.env.REACT_APP_WEATHER_API_URL;
     fetch(`${apiUrl}/geo/1.0/direct?q=${query}&limit=5&appid=${apiKey}`)
@@ -83,12 +83,18 @@ export function SearchResults() {
         </SearchIconWrapper>
         <Autocomplete
           freeSolo
+          autoComplete
           options={cities.map((city) => `${city.name}, ${city.state}, ${city.country}`)}
+          onChange={(event, value) => {
+            if (value)
+              props.onSelect(value);
+          }}
           onInputChange={(event, value) => {
             setQuery(value);
           }}
           renderInput={(params) => (
             <StyledInputBase
+              key={params.id}
               ref={params.InputProps.ref}
               placeholder="Search by city name"
               inputProps={params.inputProps}
