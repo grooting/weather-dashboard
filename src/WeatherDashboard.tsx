@@ -103,10 +103,9 @@ export function WeatherDashboard() {
           <CityForecast forecast={forecast} /></>
         }
         {idx === 1 &&
-          <SavedCities savedCities={savedCities} />
+          <SavedCities savedCities={savedCities} getCityWeather={getCityWeather}/>
         }
       </Stack>
-
       <BottomNav onClick={onClick} idx={idx} />
     </>
   );

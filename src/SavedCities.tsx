@@ -11,9 +11,9 @@ export function SavedCities(props: any) {
             >
                 <h1>Saved Cities</h1>
                 <List>
-                    {props.savedCities.map((city: string) => {
+                    {props.savedCities.map((city: string, i: number) => {
                         return (
-                            <ListItem>
+                            <ListItem key={i} onClick={() => props.getCityWeather(city)}>
                                 <ListItemButton>
                                     <ListItemText primary={city} />
                                 </ListItemButton>
