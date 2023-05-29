@@ -1,7 +1,9 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import weatherDashboardReducer from '../features/weather-dashboard/weatherDashboardSlice';
 
 export const store = configureStore({
   reducer: {
+    weatherDashboard: weatherDashboardReducer,
   },
 });
 

@@ -2,11 +2,12 @@ import { SearchAppBar } from "./search-bar-app/SearchBarApp";
 import { CurrentWeather } from "./current-weather/CurrentWeather";
 import { CityForecast } from "./city-forecast/CityForecast";
 import Stack from "@mui/material/Stack";
-import { useState } from "react";
 import { useEffect } from "react";
-import { API_KEY, API_URL } from "../../index";
 import { BottomNav } from "./BottomNav";
 import { SavedCities } from "./SavedCities";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { fetchForecastAsync, fetchWeatherAsync, saveCity, setIdx, unsaveCity } from "./weatherDashboardSlice";
+import { RootState } from "../../app/store";
 
 export interface Weather {
   temp: number;
@@ -26,67 +27,37 @@ export interface WeatherPreview {
 };
 
 export function WeatherDashboard() {
-  const [currentWeather, setCurrentWeather] = useState<Weather>();
-  const [forecast, setForecast] = useState<WeatherPreview[]>([]);
-  const [savedCities, setSavedCities] = useState<string[]>([]);
-  const [idx, setIdx] = useState<number>(0);
+  const dispatch = useAppDispatch();
+  const currentWeather = useAppSelector((state: RootState) => state.weatherDashboard.currentWeather);
+  const forecast = useAppSelector((state: RootState) => state.weatherDashboard.forecast);
+  const savedCities = useAppSelector((state: RootState) => state.weatherDashboard.savedCities);
+  const idx = useAppSelector((state: RootState) => state.weatherDashboard.idx);
 
   // demo data
   useEffect(() => {
-    getCityWeather("London,uk");
+    const demoCity = "London,uk";
+    getCityWeather(demoCity);
   }, []);
 
   const getCityWeather = (cityName: string) => {
-    // use city name to get current weather
-    fetch(`${API_URL}/data/2.5/weather?q=${cityName}&APPID=${API_KEY}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setCurrentWeather({
-          name: data.name,
-          temp: data.main.temp,
-          humidity: data.main.humidity,
-          windSpeed: data.wind.speed,
-          weather: data.weather[0].main,
-          icon: data.weather[0].icon,
-        });
-      });
-
-    // get forecast (use q instead of lat and lon, somehow it works)
-    fetch(`${API_URL}/data/2.5/forecast?q=${cityName}&APPID=${API_KEY}`)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setForecast(
-          data.list.map((item: any) => ({
-            maxTemp: item.main.temp_max,
-            minTemp: item.main.temp_min,
-            weather: item.weather[0].main,
-            icon: item.weather[0].icon,
-            date: item.dt_txt.split(" ")[0].split("-").splice(1, 2).join("-"),
-          }))
-        );
-      }
-      );
-    setIdx(0); // view current weather
+    dispatch(fetchWeatherAsync(cityName));  // get current weather
+    dispatch(fetchForecastAsync(cityName)); // get forecast
+    dispatch(setIdx(0)); // view current weather
   };
 
   const onToggleSave = (saving: boolean) => {
     const cityName = currentWeather?.name;
     if (saving) {
       // add current city to saved cities
-      if (cityName && !savedCities.includes(cityName)) {
-        setSavedCities([...savedCities, currentWeather?.name]);
-      }
+      dispatch(saveCity(cityName));
     } else {
       // remove current city from saved cities
-      if (cityName && savedCities.includes(cityName)) {
-        setSavedCities(savedCities.filter((city) => city !== cityName));
-      }
+      dispatch(unsaveCity(cityName));
     }
   }
 
   const onClick = (idx: number) => {
-    setIdx(idx);
+    dispatch(setIdx(idx));
   }
 
   return (
