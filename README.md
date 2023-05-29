@@ -50,3 +50,8 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 - [ ] Error handling in sending request
 - [ ] Send less request
 - [ ] API client
+- [ ] Forecast ugly and long
+- [ ] Styling for the whole webpage...
+- [ ] Clean up the copied styling from MUI demo
+- [ ] `getCityWeather` could be refactored into Slice to be called in `SavedCities.tsx`
+- [ ] Better /more accurate names: forecast => forecasts, item
