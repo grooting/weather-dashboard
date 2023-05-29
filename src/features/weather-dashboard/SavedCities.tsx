@@ -8,7 +8,7 @@ export function SavedCities() {
     const dispatch = useAppDispatch();
 
     return (
-        <Paper elevation={3} style={{ width: "60%", height: "600px", padding: "15px", maxWidth: "500px" }}>
+        <Paper elevation={3} style={{ width: "60%", height: "400px", padding: "15px", maxWidth: "500px" }}>
             <Stack
                 spacing={2}
                 alignItems={"center"}
