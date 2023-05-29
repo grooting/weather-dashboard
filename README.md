@@ -10,6 +10,7 @@ In the project directory, you can run:
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Notice that you need `.env` file in the root folder that contains `REACT_APP_WEATHER_API_KEY` and `REACT_APP_WEATHER_API_URL=http://api.openweathermap.org` for [OpenWeatherMap API](https://openweathermap.org/api).
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
@@ -46,6 +47,6 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 To learn React, check out the [React documentation](https://reactjs.org/).
 
 ## TODO
-- [] Error handling in sending request
-- [] Call less request
-- [] API client
+- [ ] Error handling in sending request
+- [ ] Send less request
+- [ ] API client
