@@ -1,18 +1,16 @@
 import { Box, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import { WeatherPreview } from "../WeatherDashboard";
 import styles from "./CityForecast.module.css";
+import { useAppSelector } from "../../../app/hooks";
+import { selectForecast } from "../weatherDashboardSlice";
 
-interface CityForecastProps {
-  forecast: WeatherPreview[];
-}
-
-export function CityForecast(props: CityForecastProps) {
+export function CityForecast() {
 
   return (
     <Box sx={{ width: '100%', height: "100vh", maxWidth: 360, bgcolor: 'background.paper' }}>
       <List>
         {
-          props.forecast.map((item: WeatherPreview, i: number) => {
+          useAppSelector(selectForecast).map((item: WeatherPreview, i: number) => {
             return (
               <ListItem disablePadding key={i}>
                 <ListItemButton>

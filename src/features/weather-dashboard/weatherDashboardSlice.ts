@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { fetchCurrentWeather } from './weatherDashboardAPI';
 import { fetchForecast } from './weatherDashboardAPI';
 import { Weather, WeatherPreview } from './WeatherDashboard';
+import { RootState } from '../../app/store';
 
 export interface WeatherDashboardState {
     currentWeather: Weather;
@@ -80,6 +81,11 @@ export const weatherDashboardSlice = createSlice({
             });
     }
 });
+
+export const selectCurrentWeather = (state: RootState) => state.weatherDashboard.currentWeather
+export const selectForecast = (state: RootState) => state.weatherDashboard.forecast
+export const selectSavedCities = (state: RootState) => state.weatherDashboard.savedCities
+export const selectIdx = (state: RootState) => state.weatherDashboard.idx;
 
 export const { saveCity, unsaveCity, setIdx } = weatherDashboardSlice.actions;
 

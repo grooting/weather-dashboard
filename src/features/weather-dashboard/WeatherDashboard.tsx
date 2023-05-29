@@ -6,8 +6,7 @@ import { useEffect } from "react";
 import { BottomNav } from "./BottomNav";
 import { SavedCities } from "./SavedCities";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { fetchForecastAsync, fetchWeatherAsync, saveCity, setIdx, unsaveCity } from "./weatherDashboardSlice";
-import { RootState } from "../../app/store";
+import { fetchForecastAsync, fetchWeatherAsync, saveCity, selectCurrentWeather, selectForecast, selectIdx, selectSavedCities, setIdx, unsaveCity } from "./weatherDashboardSlice";
 
 export interface Weather {
   temp: number;
@@ -28,10 +27,9 @@ export interface WeatherPreview {
 
 export function WeatherDashboard() {
   const dispatch = useAppDispatch();
-  const currentWeather = useAppSelector((state: RootState) => state.weatherDashboard.currentWeather);
-  const forecast = useAppSelector((state: RootState) => state.weatherDashboard.forecast);
-  const savedCities = useAppSelector((state: RootState) => state.weatherDashboard.savedCities);
-  const idx = useAppSelector((state: RootState) => state.weatherDashboard.idx);
+  const currentWeather = useAppSelector(selectCurrentWeather);
+  const savedCities = useAppSelector(selectSavedCities);
+  const idx = useAppSelector(selectIdx);
 
   // demo data
   useEffect(() => {
@@ -69,9 +67,13 @@ export function WeatherDashboard() {
         justifyContent={"center"}
         alignItems={"center"}
       >
-        {idx === 0 && <>
-          <CurrentWeather weather={currentWeather} onSave={onToggleSave} saved={currentWeather ? savedCities.includes(currentWeather.name) : false} />
-          <CityForecast forecast={forecast} /></>
+        {idx === 0 &&
+          <>
+            <CurrentWeather
+              onSave={onToggleSave}
+              saved={currentWeather ? savedCities.includes(currentWeather.name) : false} />
+            <CityForecast />
+          </>
         }
         {idx === 1 &&
           <SavedCities savedCities={savedCities} getCityWeather={getCityWeather} />
