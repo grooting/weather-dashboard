@@ -16,7 +16,7 @@ export function CurrentWeather() {
         spacing={2}
         alignItems={"center"}
       >
-        <img src={weather ? `${API_ICON_URL}/${weather?.icon}@2x.png` : ""} alt="weather-icon" className={styles.weatherIcon} />
+        <img src={weather ? `${API_ICON_URL}/${weather.icon}@2x.png` : ""} alt="weather-icon" className={styles.weatherIcon} />
         <h4>City: {weather?.name}<br />
           Weather: {weather?.weather}
         </h4>
