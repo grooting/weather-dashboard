@@ -7,7 +7,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 
 import { SearchResults } from "./SearchResults";
 
-export function SearchAppBar(props: any) {
+export function SearchAppBar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -29,7 +29,7 @@ export function SearchAppBar(props: any) {
           >
             Weather
           </Typography>
-          <SearchResults onSelect={props.onSelect} />
+          <SearchResults/>
         </Toolbar>
       </AppBar>
     </Box>

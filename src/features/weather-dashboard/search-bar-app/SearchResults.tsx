@@ -5,12 +5,15 @@ import { useEffect } from "react";
 import { useState } from "react";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
-import { API_KEY, API_URL } from "../../../index";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { fetchCitiesAsync, fetchForecastAsync, fetchWeatherAsync, setCurrentCity, setIdx } from "../weatherDashboardSlice";
 
-interface City {
+export interface City {
   name: string;
   country: string;
   state: string;
+  lat: number;
+  lon: number;
 };
 
 const Search = styled("div")(({ theme }) => ({
@@ -55,23 +58,17 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export function SearchResults(props: any) {
-  const [cities, setCities] = useState<City[]>([]);
+export function SearchResults() {
   const [query, setQuery] = useState<string>("");
+  const dispatch = useAppDispatch();
+  const cities = useAppSelector((state) => state.weatherDashboard.cityResults);
 
   useEffect(() => {
     if (query.length > 1) {
-      getCities();
+      dispatch(fetchCitiesAsync(query));
     }
   }, [query]);
 
-  const getCities = () => {
-    fetch(`${API_URL}/geo/1.0/direct?q=${query}&limit=5&appid=${API_KEY}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setCities(data);
-      });
-  };
 
   return (
     <Stack spacing={2} sx={{ width: 300 }}>
@@ -84,11 +81,16 @@ export function SearchResults(props: any) {
           autoComplete
           options={cities.map((city) => `${city.name}, ${city.state}, ${city.country}`)}
           onChange={(event, value) => {
-            if (value)
-              props.onSelect(value);
+            if (value) {
+              const trimmed = value.replaceAll(" ", "");
+              dispatch(fetchWeatherAsync(trimmed));  // get current weather
+              dispatch(fetchForecastAsync(trimmed)); // get forecast
+              dispatch(setCurrentCity(trimmed)); // set current city
+              dispatch(setIdx(0)); // view current weather
+            }
           }}
           onInputChange={(event, value) => {
-            setQuery(value);
+            setQuery(value.replaceAll(" ", ""));
           }}
           renderInput={(params) => (
             <StyledInputBase

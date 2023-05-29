@@ -27,8 +27,6 @@ export interface WeatherPreview {
 
 export function WeatherDashboard() {
   const dispatch = useAppDispatch();
-  // const currentWeather = useAppSelector(selectCurrentWeather);
-  // const savedCities = useAppSelector(selectSavedCities);
   const idx = useAppSelector(selectIdx);
 
   // demo data
@@ -43,24 +41,9 @@ export function WeatherDashboard() {
     dispatch(setIdx(0)); // view current weather
   };
 
-  // const onToggleSave = (saving: boolean) => {
-  //   const cityName = currentWeather?.name;
-  //   if (saving) {
-  //     // add current city to saved cities
-  //     dispatch(saveCity(cityName));
-  //   } else {
-  //     // remove current city from saved cities
-  //     dispatch(unsaveCity(cityName));
-  //   }
-  // }
-
-  // const onClick = (idx: number) => {
-  //   dispatch(setIdx(idx));
-  // }
-
   return (
     <>
-      <SearchAppBar onSelect={getCityWeather} />
+      <SearchAppBar />
       <Stack
         spacing={2}
         style={{ marginTop: "48px" }}

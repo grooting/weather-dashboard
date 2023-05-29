@@ -1,21 +1,26 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { fetchCurrentWeather } from './weatherDashboardAPI';
+import { fetchCities, fetchCurrentWeather } from './weatherDashboardAPI';
 import { fetchForecast } from './weatherDashboardAPI';
 import { Weather, WeatherPreview } from './WeatherDashboard';
 import { RootState } from '../../app/store';
+import { City } from './search-bar-app/SearchResults';
 
 export interface WeatherDashboardState {
     currentWeather: Weather;
     forecast: WeatherPreview[];
     savedCities: string[];
     idx: number;
+    cityResults: City[];
+    currentCity: string;
 };
 
 const initialState: WeatherDashboardState = {
     currentWeather: {} as Weather,
     forecast: [],
     savedCities: [],
-    idx: 0
+    idx: 0,
+    cityResults: [],
+    currentCity: 'London,England,GB',
 };
 
 export const fetchWeatherAsync = createAsyncThunk(
@@ -49,6 +54,14 @@ export const fetchForecastAsync = createAsyncThunk(
     }
 );
 
+export const fetchCitiesAsync = createAsyncThunk(
+    'weatherDashboard/fetchCities',
+    async (query: string) => {
+        const response = await fetchCities(query);
+        return response;
+    }
+);
+
 export const weatherDashboardSlice = createSlice({
     name: 'weatherDashboard',
     initialState,
@@ -57,17 +70,20 @@ export const weatherDashboardSlice = createSlice({
             state.idx = action.payload;
         },
         toggleSavedCity: (state) => {
-            const cityName = state.currentWeather?.name;
-            const saved = state.savedCities.includes(cityName);
+            const cityString = state.currentCity;
+            const saved = state.savedCities.includes(cityString);
             if (!saved) { // saving
-                if (cityName && !state.savedCities.includes(cityName)) {
-                    state.savedCities.push(cityName);
+                if (cityString && !state.savedCities.includes(cityString)) {
+                    state.savedCities.push(cityString);
                 }
             } else { // un-saving
-                if (cityName && state.savedCities.includes(cityName)) {
-                    state.savedCities = state.savedCities.filter((city) => city !== cityName);
+                if (cityString && state.savedCities.includes(cityString)) {
+                    state.savedCities = state.savedCities.filter((city) => city !== cityString);
                 }
             }
+        },
+        setCurrentCity: (state, action: PayloadAction<string>) => {
+            state.currentCity = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -81,6 +97,11 @@ export const weatherDashboardSlice = createSlice({
                 if (state) {
                     state.forecast = action.payload;
                 }
+            })
+            .addCase(fetchCitiesAsync.fulfilled, (state, action: PayloadAction<City[]>) => {
+                if (state) {
+                    state.cityResults = action.payload;
+                }
             });
     }
 });
@@ -89,8 +110,9 @@ export const selectCurrentWeather = (state: RootState) => state.weatherDashboard
 export const selectForecast = (state: RootState) => state.weatherDashboard.forecast
 export const selectSavedCities = (state: RootState) => state.weatherDashboard.savedCities
 export const selectIdx = (state: RootState) => state.weatherDashboard.idx;
+export const selectCurrentCity = (state: RootState) => state.weatherDashboard.currentCity;
 
-export const { setIdx, toggleSavedCity } = weatherDashboardSlice.actions;
+export const { setIdx, toggleSavedCity, setCurrentCity } = weatherDashboardSlice.actions;
 
 export default weatherDashboardSlice.reducer;
 
