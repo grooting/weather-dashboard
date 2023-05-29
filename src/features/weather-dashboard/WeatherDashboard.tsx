@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { BottomNav } from "./BottomNav";
 import { SavedCities } from "./SavedCities";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { fetchForecastAsync, fetchWeatherAsync, saveCity, selectCurrentWeather, selectForecast, selectIdx, selectSavedCities, setIdx, unsaveCity } from "./weatherDashboardSlice";
+import { fetchForecastAsync, fetchWeatherAsync, selectIdx, setIdx } from "./weatherDashboardSlice";
 
 export interface Weather {
   temp: number;
@@ -27,8 +27,8 @@ export interface WeatherPreview {
 
 export function WeatherDashboard() {
   const dispatch = useAppDispatch();
-  const currentWeather = useAppSelector(selectCurrentWeather);
-  const savedCities = useAppSelector(selectSavedCities);
+  // const currentWeather = useAppSelector(selectCurrentWeather);
+  // const savedCities = useAppSelector(selectSavedCities);
   const idx = useAppSelector(selectIdx);
 
   // demo data
@@ -43,20 +43,20 @@ export function WeatherDashboard() {
     dispatch(setIdx(0)); // view current weather
   };
 
-  const onToggleSave = (saving: boolean) => {
-    const cityName = currentWeather?.name;
-    if (saving) {
-      // add current city to saved cities
-      dispatch(saveCity(cityName));
-    } else {
-      // remove current city from saved cities
-      dispatch(unsaveCity(cityName));
-    }
-  }
+  // const onToggleSave = (saving: boolean) => {
+  //   const cityName = currentWeather?.name;
+  //   if (saving) {
+  //     // add current city to saved cities
+  //     dispatch(saveCity(cityName));
+  //   } else {
+  //     // remove current city from saved cities
+  //     dispatch(unsaveCity(cityName));
+  //   }
+  // }
 
-  const onClick = (idx: number) => {
-    dispatch(setIdx(idx));
-  }
+  // const onClick = (idx: number) => {
+  //   dispatch(setIdx(idx));
+  // }
 
   return (
     <>
@@ -69,17 +69,15 @@ export function WeatherDashboard() {
       >
         {idx === 0 &&
           <>
-            <CurrentWeather
-              onSave={onToggleSave}
-              saved={currentWeather ? savedCities.includes(currentWeather.name) : false} />
+            <CurrentWeather />
             <CityForecast />
           </>
         }
         {idx === 1 &&
-          <SavedCities savedCities={savedCities} getCityWeather={getCityWeather} />
+          <SavedCities />
         }
       </Stack>
-      <BottomNav onClick={onClick} idx={idx} />
+      <BottomNav />
     </>
   );
 }

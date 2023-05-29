@@ -5,12 +5,12 @@ import { FavoriteToggle } from "./FavoriteToggle";
 import { selectCurrentWeather } from "../weatherDashboardSlice";
 import { useAppSelector } from "../../../app/hooks";
 
-export function CurrentWeather(props: any) {
+export function CurrentWeather() {
   const weather = useAppSelector(selectCurrentWeather);
 
   return (
     <Paper elevation={3} style={{ width: "60%", height: "280px", padding: "15px", maxWidth: "500px" }}>
-      <FavoriteToggle onSave={props.onSave} saved={props.saved} />
+      <FavoriteToggle />
       <Stack
         spacing={2}
         alignItems={"center"}

@@ -53,18 +53,21 @@ export const weatherDashboardSlice = createSlice({
     name: 'weatherDashboard',
     initialState,
     reducers: {
-        saveCity: (state, action: PayloadAction<string>) => {
-            if (action.payload && !state.savedCities.includes(action.payload)) {
-                state.savedCities.push(action.payload);
-            }
-        },
-        unsaveCity: (state, action: PayloadAction<string>) => {
-            if (action.payload && state.savedCities.includes(action.payload)) {
-                state.savedCities = state.savedCities.filter((city) => city !== action.payload);
-            }
-        },
         setIdx: (state, action: PayloadAction<number>) => {
             state.idx = action.payload;
+        },
+        toggleSavedCity: (state) => {
+            const cityName = state.currentWeather?.name;
+            const saved = state.savedCities.includes(cityName);
+            if (!saved) { // saving
+                if (cityName && !state.savedCities.includes(cityName)) {
+                    state.savedCities.push(cityName);
+                }
+            } else { // un-saving
+                if (cityName && state.savedCities.includes(cityName)) {
+                    state.savedCities = state.savedCities.filter((city) => city !== cityName);
+                }
+            }
         }
     },
     extraReducers: (builder) => {
@@ -87,7 +90,7 @@ export const selectForecast = (state: RootState) => state.weatherDashboard.forec
 export const selectSavedCities = (state: RootState) => state.weatherDashboard.savedCities
 export const selectIdx = (state: RootState) => state.weatherDashboard.idx;
 
-export const { saveCity, unsaveCity, setIdx } = weatherDashboardSlice.actions;
+export const { setIdx, toggleSavedCity } = weatherDashboardSlice.actions;
 
 export default weatherDashboardSlice.reducer;
 

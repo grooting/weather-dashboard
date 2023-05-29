@@ -1,8 +1,12 @@
 import { ListItem, ListItemButton, ListItemText, Paper } from "@mui/material";
 import { Stack } from "@mui/system";
 import { List } from "@mui/material";
+import { fetchForecastAsync, fetchWeatherAsync, selectSavedCities, setIdx } from "./weatherDashboardSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
-export function SavedCities(props: any) {
+export function SavedCities() {
+    const dispatch = useAppDispatch();
+
     return (
         <Paper elevation={3} style={{ width: "60%", height: "600px", padding: "15px", maxWidth: "500px" }}>
             <Stack
@@ -11,9 +15,13 @@ export function SavedCities(props: any) {
             >
                 <h1>Saved Cities</h1>
                 <List>
-                    {props.savedCities.map((city: string, i: number) => {
+                    {useAppSelector(selectSavedCities).map((city: string, i: number) => {
                         return (
-                            <ListItem key={i} onClick={() => props.getCityWeather(city)}>
+                            <ListItem key={i} onClick={() => {
+                                dispatch(fetchWeatherAsync(city));  // get current weather
+                                dispatch(fetchForecastAsync(city)); // get forecast
+                                dispatch(setIdx(0)); // view current weather
+                            }}>
                                 <ListItemButton>
                                     <ListItemText primary={city} />
                                 </ListItemButton>
