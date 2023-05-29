@@ -3,6 +3,7 @@ import { WeatherPreview } from "../WeatherDashboard";
 import styles from "./CityForecast.module.css";
 import { useAppSelector } from "../../../app/hooks";
 import { selectForecast } from "../weatherDashboardSlice";
+import { API_ICON_URL } from "../../..";
 
 export function CityForecast() {
 
@@ -16,7 +17,7 @@ export function CityForecast() {
                 <ListItemButton>
                   <ListItemText primary={item.date} />
                   <ListItemText primary={item.weather} />
-                  <img src={`https://openweathermap.org/img/wn/${item.icon}@2x.png`} alt="weather-icon" className={styles.forecastWeatherIcon} />
+                  <img src={`${API_ICON_URL}/${item.icon}@2x.png`} alt="weather-icon" className={styles.forecastWeatherIcon} />
                   <ListItemText primary={`max: ${item.maxTemp}`} />,
                   <ListItemText primary={`min: ${item.minTemp}`} />
                 </ListItemButton>
